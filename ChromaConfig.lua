@@ -1,5 +1,5 @@
 ﻿ChromaConfig.ALLIANCE_COLORS = {
-  [ALLIANCE_ALDMERI_DOMINION] = ZO_ColorDef:New(1, 1, 0, 1),
+  [ALLIANCE_ALDMERI_DOMINION] = ZO_ColorDef:New(1, 0.75, 0, 1),
   [ALLIANCE_EBONHEART_PACT] = ZO_ColorDef:New(1, 0, 0, 1),
   [ALLIANCE_DAGGERFALL_COVENANT] = ZO_ColorDef:New(0, 0, 1, 1),
 }
