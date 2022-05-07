@@ -46,7 +46,7 @@ function ChromaConfigSettings:CreateOptionsMenu()
       end,
       setFunc = function(v)
         ChromaConfig.ALLIANCE_COLORS[alliance] = (v and intendedValue or nil)
-        ChromaConfig:ResetAllianceEffects()
+        ChromaConfig:ResetAllianceEffects(alliance, false)
       end,
     })
     table.insert(optionsData, {
@@ -63,7 +63,7 @@ function ChromaConfigSettings:CreateOptionsMenu()
       setFunc = function(r, g, b)
         intendedValue = ZO_ColorDef:New(r, g, b, 1)
         ChromaConfig.ALLIANCE_COLORS[alliance] = intendedValue
-        ChromaConfig:ResetAllianceEffects()
+        ChromaConfig:ResetAllianceEffects(alliance, false)
       end,
       disabled = function()
         return not ChromaConfig.ALLIANCE_COLORS[alliance]
