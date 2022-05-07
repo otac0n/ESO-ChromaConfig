@@ -8,13 +8,13 @@
 ; trademarks or trademarks of Razer Inc. in the United States and/or
 ; other countries. All rights reserved.
 
-## Title: ChromaConfigurator
+## Title: |cff0000C|cff8800h|cffff00r|c00ff00o|c4444ffm|cff00ffa|rConfig
 ## APIVersion: 101033
 ## Version: 1.00
 ## SavedVariables:
 ## Author: otac0n
-## Description: A utility for configuring the Razer Chroma functionality
+## Description: A utility for configuring the |c44d62cRazer Chroma™|r functionality
 ## OptionalDependsOn:
 ## DependsOn:
 
-ChromaConfigurator.lua
+ChromaConfig.lua

@@ -1,4 +1,4 @@
-# ChromaConfigurator
+# ChromaConfig
 ESO Addon
 
 ESOUI page: TBD
