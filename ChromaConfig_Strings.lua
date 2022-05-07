@@ -17,6 +17,22 @@ local localizedStrings = {
   },
 }
 
+local function sharedStrings()
+  return {
+    ALLIANCES = {
+      [ALLIANCE_ALDMERI_DOMINION] = {
+        NAME = GetString(SI_ALLIANCE1),
+      },
+      [ALLIANCE_EBONHEART_PACT] = {
+        NAME = GetString(SI_ALLIANCE2),
+      },
+      [ALLIANCE_DAGGERFALL_COVENANT] = {
+        NAME = GetString(SI_ALLIANCE3),
+      },
+    },
+  }
+end
+
 local function mergeTables(base, special)
   local merged = {}
   for k,b in pairs(base) do
@@ -40,23 +56,9 @@ function ChromaConfig:GetStrings()
   local cached = ChromaConfig.stringCache[lang]
   if cached then return cached end
 
-  local sharedStrings = {
-    ALLIANCES = {
-      [ALLIANCE_ALDMERI_DOMINION] = {
-        NAME = GetString(SI_ALLIANCE1),
-      },
-      [ALLIANCE_EBONHEART_PACT] = {
-        NAME = GetString(SI_ALLIANCE2),
-      },
-      [ALLIANCE_DAGGERFALL_COVENANT] = {
-        NAME = GetString(SI_ALLIANCE3),
-      },
-    },
-  }
-  
   local strings = localizedStrings[lang]
   if not strings then strings = localizedStrings["en"] end
-  cached = mergeTables(sharedStrings, strings)
+  cached = mergeTables(sharedStrings(), strings)
   ChromaConfig.stringCache[lang] = cached
   return cached
 end
