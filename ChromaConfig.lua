@@ -19,9 +19,10 @@ end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
   local recreate = ZO_RZCHROMA_EFFECTS.activeAlliance == alliance and ZO_RZCHROMA_EFFECTS.inBattleground == inBattleground
+  local getColorFallback = inBattleground and GetBattlegroundAllianceColor or GetAllianceColor
 
   local oldEffects = ZO_RZCHROMA_EFFECTS:GetAllianceEffects(alliance, inBattleground)
-  local newEffects = self:CreateAllianceEffects(ChromaConfig.ALLIANCE_COLORS[alliance] or GetAllianceColor(alliance))
+  local newEffects = self:CreateAllianceEffects(ChromaConfig.ALLIANCE_COLORS[alliance] or getColorFallback(alliance))
 
   for deviceType, newEffect in pairs(newEffects) do
     local oldEffect = oldEffects[deviceType]
