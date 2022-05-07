@@ -1,6 +1,7 @@
 local localizedStrings = {
   ["en"] = {
     ALLIANCE_HEADER = "Alliance",
+    BATTLEGROUNDS_HEADER = "Battlegrounds",
     USE_CUSTOM_X_COLOR = "Use custom <<1>> color",
     CUSTOM_X_COLOR = "Custom <<1>> color",
     ALLIANCES = {
@@ -12,6 +13,17 @@ local localizedStrings = {
       },
       [ALLIANCE_DAGGERFALL_COVENANT] = {
         TOOLTIP = "Typically a shade of blue.",
+      },
+    },
+    BATTLEGROUND_ALLIANCES = {
+      [BATTLEGROUND_ALLIANCE_FIRE_DRAKES] = {
+        TOOLTIP = "Typically a shade of orange.",
+      },
+      [BATTLEGROUND_ALLIANCE_PIT_DAEMONS] = {
+        TOOLTIP = "Typically a shade of green.",
+      },
+      [BATTLEGROUND_ALLIANCE_STORM_LORDS] = {
+        TOOLTIP = "Typically a shade of purple.",
       },
     },
   },
@@ -28,6 +40,17 @@ local function sharedStrings()
       },
       [ALLIANCE_DAGGERFALL_COVENANT] = {
         NAME = GetString(SI_ALLIANCE3),
+      },
+    },
+    BATTLEGROUND_ALLIANCES = {
+      [BATTLEGROUND_ALLIANCE_FIRE_DRAKES] = {
+        NAME = GetString(SI_BATTLEGROUNDALLIANCE1),
+      },
+      [BATTLEGROUND_ALLIANCE_PIT_DAEMONS] = {
+        NAME = GetString(SI_BATTLEGROUNDALLIANCE2),
+      },
+      [BATTLEGROUND_ALLIANCE_STORM_LORDS] = {
+        NAME = GetString(SI_BATTLEGROUNDALLIANCE3),
       },
     },
   }

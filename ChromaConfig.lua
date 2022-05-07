@@ -3,6 +3,11 @@
   [ALLIANCE_EBONHEART_PACT] = ZO_ColorDef:New(1, 0, 0, 1),
   [ALLIANCE_DAGGERFALL_COVENANT] = ZO_ColorDef:New(0, 0, 1, 1),
 }
+ChromaConfig.TEAM_COLORS = {
+  [BATTLEGROUND_ALLIANCE_FIRE_DRAKES] = ZO_ColorDef:New(1, 0.4, 0, 1),
+  [BATTLEGROUND_ALLIANCE_PIT_DAEMONS] = ZO_ColorDef:New(0.44, 0.78, 0.2, 1),
+  [BATTLEGROUND_ALLIANCE_STORM_LORDS] = ZO_ColorDef:New(0.85, 0.06, 1, 1),
+}
 
 EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, function (eventCode, name)
   if name ~= ChromaConfig.ADDON_NAME then return end
