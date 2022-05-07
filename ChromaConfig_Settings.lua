@@ -1,20 +1,20 @@
-ChromaConfigSettings = ZO_Object:Subclass()
+ChromaConfigSettingsMenu = ZO_Object:Subclass()
 
-function ChromaConfigSettings:New()
+function ChromaConfigSettingsMenu:New()
   local obj = ZO_Object.New(self)
   obj:Initialize()
   return obj
 end
 
-function ChromaConfigSettings:Initialize()
+function ChromaConfigSettingsMenu:Initialize()
   self:LoadSettings()
   self:CreateOptionsMenu()
 end
 
-function ChromaConfigSettings:LoadSettings()
+function ChromaConfigSettingsMenu:LoadSettings()
 end
 
-function ChromaConfigSettings:CreateOptionsMenu()
+function ChromaConfigSettingsMenu:CreateOptionsMenu()
   local str = ChromaConfig:GetStrings()
 
   local panel = {
@@ -111,6 +111,6 @@ function ChromaConfigSettings:CreateOptionsMenu()
     })
   end
 
-  self.settingsPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsPanel", panel)
-  LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsPanel", optionsData)
+  self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)
+  LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", optionsData)
 end
