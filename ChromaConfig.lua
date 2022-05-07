@@ -1,21 +1,12 @@
-﻿ChromaConfig.ALLIANCE_COLORS = {
-  [ALLIANCE_ALDMERI_DOMINION] = ZO_ColorDef:New(1, 0.85, 0, 1),
-  [ALLIANCE_EBONHEART_PACT] = ZO_ColorDef:New(1, 0, 0, 1),
-  [ALLIANCE_DAGGERFALL_COVENANT] = ZO_ColorDef:New(0, 0, 1, 1),
-}
-ChromaConfig.TEAM_COLORS = {
-  [BATTLEGROUND_ALLIANCE_FIRE_DRAKES] = ZO_ColorDef:New(1, 0.4, 0, 1),
-  [BATTLEGROUND_ALLIANCE_PIT_DAEMONS] = ZO_ColorDef:New(0.44, 0.78, 0.2, 1),
-  [BATTLEGROUND_ALLIANCE_STORM_LORDS] = ZO_ColorDef:New(0.85, 0.06, 1, 1),
-}
-
-EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, function (eventCode, name)
+﻿EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, function (eventCode, name)
   if name ~= ChromaConfig.ADDON_NAME then return end
   ChromaConfig:Init()
   EVENT_MANAGER:UnregisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED)
 end)
 
 function ChromaConfig:Init()
+  ChromaConfig:InitializeSettings()
+
   for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
     ChromaConfig:ResetAllianceEffects(alliance, false)
   end
@@ -27,11 +18,18 @@ function ChromaConfig:Init()
 end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
+  local newColor
+  if ChromaConfig.accountVars.Alliances[alliance].UseCustomColor then
+    newColor = ZO_ColorDef:New(ChromaConfig.accountVars.Alliances[alliance].Color)
+  else
+    local getColorFallback = inBattleground and GetBattlegroundAllianceColor or GetAllianceColor
+    newColor = getColorFallback(alliance)
+  end
+
   local recreate = ZO_RZCHROMA_EFFECTS.activeAlliance == alliance and ZO_RZCHROMA_EFFECTS.inBattleground == inBattleground
-  local getColorFallback = inBattleground and GetBattlegroundAllianceColor or GetAllianceColor
 
   local oldEffects = ZO_RZCHROMA_EFFECTS:GetAllianceEffects(alliance, inBattleground)
-  local newEffects = self:CreateAllianceEffects(ChromaConfig.ALLIANCE_COLORS[alliance] or getColorFallback(alliance))
+  local newEffects = self:CreateAllianceEffects(newColor)
 
   for deviceType, newEffect in pairs(newEffects) do
     local oldEffect = oldEffects[deviceType]
