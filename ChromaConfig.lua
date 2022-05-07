@@ -20,7 +20,7 @@ function ChromaConfig:ResetAllianceEffects()
   local inBattleground = ZO_RZCHROMA_EFFECTS.inBattleground
   ZO_RZCHROMA_EFFECTS:SetAlliance(ALLIANCE_NONE)
   ZO_RZCHROMA_EFFECTS.allianceEffects = ZO_RZCHROMA_EFFECTS:CreateAllianceEffects(function (a)
-    return ChromaConfig.ALLIANCE_COLORS[a]
+    return ChromaConfig.ALLIANCE_COLORS[a] or GetAllianceColor(a)
   end)
   ZO_RZCHROMA_EFFECTS:SetAlliance(alliance, inBattleground)
 end
