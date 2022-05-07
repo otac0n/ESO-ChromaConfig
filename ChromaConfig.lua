@@ -11,6 +11,7 @@ EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, fun
 end)
 
 function ChromaConfig:Init()
+  ChromaConfig.settingsPanel = ChromaConfigSettings:New()
   ChromaConfig:ResetAllianceEffects()
 end
 
