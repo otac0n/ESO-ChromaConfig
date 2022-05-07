@@ -17,9 +17,12 @@ end)
 
 function ChromaConfig:Init()
   ChromaConfig.settingsPanel = ChromaConfigSettings:New()
-  ChromaConfig:ResetAllianceEffects(ALLIANCE_ALDMERI_DOMINION, false)
-  ChromaConfig:ResetAllianceEffects(ALLIANCE_EBONHEART_PACT, false)
-  ChromaConfig:ResetAllianceEffects(ALLIANCE_DAGGERFALL_COVENANT, false)
+  for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
+    ChromaConfig:ResetAllianceEffects(alliance, false)
+  end
+  for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
+    ChromaConfig:ResetAllianceEffects(alliance, true)
+  end
 end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
