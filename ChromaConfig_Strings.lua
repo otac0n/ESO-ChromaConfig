@@ -1,8 +1,8 @@
 local localizedStrings = {
   ["en"] = {
     ALLIANCE_HEADER = "Alliance",
-    ALLIANCE_USE_CUSTOM_COLOR = "Use custom <<1>> color",
-    ALLIANCE_CUSTOM_COLOR = "Custom <<1>> color",
+    USE_CUSTOM_X_COLOR = "Use custom <<1>> color",
+    CUSTOM_X_COLOR = "Custom <<1>> color",
     ALLIANCES = {
       [ALLIANCE_ALDMERI_DOMINION] = {
         TOOLTIP = "Typically a shade of yellow.",

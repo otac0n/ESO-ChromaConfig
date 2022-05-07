@@ -40,7 +40,7 @@ function ChromaConfigSettings:CreateOptionsMenu()
     local intendedValue
     table.insert(optionsData, {
       type = "checkbox",
-      name = zo_strformat(str.ALLIANCE_USE_CUSTOM_COLOR, str.ALLIANCES[alliance].NAME),
+      name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       getFunc = function()
         return ChromaConfig.ALLIANCE_COLORS[alliance] ~= nil
       end,
@@ -51,7 +51,7 @@ function ChromaConfigSettings:CreateOptionsMenu()
     })
     table.insert(optionsData, {
       type = "colorpicker",
-      name = zo_strformat(str.ALLIANCE_CUSTOM_COLOR, str.ALLIANCES[alliance].NAME),
+      name = zo_strformat(str.CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       tooltip = str.ALLIANCES[alliance].TOOLTIP,
       getFunc = function()
         if not intendedValue then
