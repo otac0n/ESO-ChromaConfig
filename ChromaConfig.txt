@@ -19,5 +19,5 @@
 
 ChromaConfig_Shared.lua
 ChromaConfig_Strings.lua
-ChromaConfig_Settings.lua
+ChromaConfig_SettingsMenu.lua
 ChromaConfig.lua

@@ -16,13 +16,14 @@ EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, fun
 end)
 
 function ChromaConfig:Init()
-  ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
   for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
     ChromaConfig:ResetAllianceEffects(alliance, false)
   end
   for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
     ChromaConfig:ResetAllianceEffects(alliance, true)
   end
+
+  ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
