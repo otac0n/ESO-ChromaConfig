@@ -116,13 +116,15 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
 
   local backgroundAccountCheckbox = backgroundVars:GetLibAddonMenuAccountCheckbox()
   local setFunc = backgroundAccountCheckbox.setFunc 
+  local refresh
   backgroundAccountCheckbox.setFunc = function (...)
     setFunc(...)
+    refresh()
     ChromaConfig:ResetAllianceEffects(nil, nil)
   end
   table.insert(optionsData, backgroundAccountCheckbox)
 
-  self:AddToggleColorPicker(
+  refresh = self:AddToggleColorPicker(
     optionsData,
     str.BACKGROUND,
     function () return backgroundVars.BackgroundColor end,
@@ -157,12 +159,15 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
 
   local notificationAccountCheckbox = notificationVars:GetLibAddonMenuAccountCheckbox()
   local setFunc = notificationAccountCheckbox.setFunc 
+  local refresh
   notificationAccountCheckbox.setFunc = function (...)
     setFunc(...)
+    refresh()
+    ChromaConfig:ResetDeathEffects()
   end
   table.insert(optionsData, notificationAccountCheckbox)
 
-  self:AddToggleColorPicker(
+  refresh = self:AddToggleColorPicker(
     optionsData,
     str.DEATH_EFFECT,
     function () return notificationVars.DeathEffectColor end,
@@ -177,9 +182,12 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
 end
 
 function ChromaConfigSettingsMenu:AddToggleColorPicker(optionsData, name, getFunc, setFunc, default)
-  local intendedColor = getFunc() or default
-  if type(intendedColor) ~= "string" then
-    intendedColor = "000000"
+  local intendedColor
+  local function refresh()
+    intendedColor = getFunc() or default
+    if type(intendedColor) ~= "string" then
+      intendedColor = "000000"
+    end
   end
 
   table.insert(optionsData, {
@@ -208,4 +216,7 @@ function ChromaConfigSettingsMenu:AddToggleColorPicker(optionsData, name, getFun
       return not getFunc()
     end,
   })
+
+  refresh()
+  return refresh
 end
