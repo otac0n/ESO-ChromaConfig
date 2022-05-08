@@ -1,8 +1,8 @@
 local localizedStrings = {
   ["en"] = {
-    ACCOUNT_SETTINGS = "Account Settings",
-    ALLIANCE_HEADER = "Alliance",
-    BATTLEGROUNDS_HEADER = "Battlegrounds",
+    ALLIANCE_SETTINGS = "Alliance Settings",
+    ALLIANCE_HEADER = "Alliance Background",
+    BATTLEGROUNDS_HEADER = "Battlegrounds Background",
     USE_CUSTOM_X_COLOR = "Use custom <<1>> color",
     CUSTOM_X_COLOR = "Custom <<1>> color",
     BACKGROUND_COLOR = "Background Color",

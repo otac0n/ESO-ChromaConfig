@@ -1,5 +1,5 @@
 ChromaConfig.variableVersion = 1
-local defaultAccountVars = {
+local defaultAllianceVars = {
   Alliances = {
     [ALLIANCE_ALDMERI_DOMINION] = {
       UseCustomColor = true,
@@ -30,17 +30,17 @@ local defaultAccountVars = {
   },
 }
 
-local defaultCharacterVars = {
+local defaultBackgroundVars = {
   BackgroundColor = nil,
   UseCustomColorDuringBattlegrounds = false,
 }
 
 function ChromaConfig:InitializeSettings()
-  ChromaConfig.accountVars = LibSavedVars
-    :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Global", defaultAccountVars)
+  ChromaConfig.allianceVars = LibSavedVars
+    :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Alliance", defaultAllianceVars)
     :EnableDefaultsTrimming()
   ChromaConfig.characterVars = LibSavedVars
-    :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Account", defaultCharacterVars)
-    :AddCharacterSettingsToggle(ChromaConfig.ADDON_NAME.."_Settings", "Character")
+    :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Background_Account", defaultBackgroundVars)
+    :AddCharacterSettingsToggle(ChromaConfig.ADDON_NAME.."_Settings", "Background_Character")
     :EnableDefaultsTrimming()
 end

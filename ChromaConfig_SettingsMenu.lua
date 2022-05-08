@@ -11,7 +11,7 @@ function ChromaConfigSettingsMenu:Initialize()
 end
 
 function ChromaConfigSettingsMenu:CreateOptionsMenu()
-  local accountVars = ChromaConfig.accountVars
+  local allianceVars = ChromaConfig.allianceVars
   local characterVars = ChromaConfig.characterVars
   local str = ChromaConfig:GetStrings()
 
@@ -32,7 +32,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
 
   table.insert(optionsData, {
     type = "submenu",
-    name = str.ACCOUNT_SETTINGS,
+    name = str.ALLIANCE_SETTINGS,
     controls = accountControls,
   })
 
@@ -46,10 +46,10 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       type = "checkbox",
       name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       getFunc = function()
-        return accountVars.Alliances[alliance].UseCustomColor
+        return allianceVars.Alliances[alliance].UseCustomColor
       end,
       setFunc = function(v)
-        accountVars.Alliances[alliance].UseCustomColor = v
+        allianceVars.Alliances[alliance].UseCustomColor = v
         ChromaConfig:ResetAllianceEffects(alliance, false)
       end,
     })
@@ -59,15 +59,15 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       name = zo_strformat(str.CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       tooltip = str.ALLIANCES[alliance].TOOLTIP,
       getFunc = function()
-        return ZO_ColorDef:New(accountVars.Alliances[alliance].Color):UnpackRGB()
+        return ZO_ColorDef:New(allianceVars.Alliances[alliance].Color):UnpackRGB()
       end,
       setFunc = function(r, g, b)
         local color = ZO_ColorDef:New(r, g, b, 1)
-        accountVars.Alliances[alliance].Color = color:ToHex()
+        allianceVars.Alliances[alliance].Color = color:ToHex()
         ChromaConfig:ResetAllianceEffects(alliance, false)
       end,
       disabled = function()
-        return not accountVars.Alliances[alliance].UseCustomColor
+        return not allianceVars.Alliances[alliance].UseCustomColor
       end,
     })
   end
@@ -82,10 +82,10 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       type = "checkbox",
       name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.BATTLEGROUND_ALLIANCES[alliance].NAME),
       getFunc = function()
-        return accountVars.Teams[alliance].UseCustomColor
+        return allianceVars.Teams[alliance].UseCustomColor
       end,
       setFunc = function(v)
-        accountVars.Teams[alliance].UseCustomColor = v
+        allianceVars.Teams[alliance].UseCustomColor = v
         ChromaConfig:ResetAllianceEffects(alliance, true)
       end,
     })
@@ -95,25 +95,25 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       name = zo_strformat(str.CUSTOM_X_COLOR, str.BATTLEGROUND_ALLIANCES[alliance].NAME),
       tooltip = str.BATTLEGROUND_ALLIANCES[alliance].TOOLTIP,
       getFunc = function()
-        return ZO_ColorDef:New(accountVars.Teams[alliance].Color):UnpackRGB()
+        return ZO_ColorDef:New(allianceVars.Teams[alliance].Color):UnpackRGB()
       end,
       setFunc = function(r, g, b)
         local color = ZO_ColorDef:New(r, g, b, 1)
-        accountVars.Teams[alliance].Color = color:ToHex()
+        allianceVars.Teams[alliance].Color = color:ToHex()
         ChromaConfig:ResetAllianceEffects(alliance, true)
       end,
       disabled = function()
-        return not accountVars.Teams[alliance].UseCustomColor
+        return not allianceVars.Teams[alliance].UseCustomColor
       end,
     })
   end
-
-  table.insert(optionsData, characterVars:GetLibAddonMenuAccountCheckbox())
 
   table.insert(optionsData, {
     type = "header",
     name = str.BACKGROUND_COLOR,
   })
+
+  table.insert(optionsData, characterVars:GetLibAddonMenuAccountCheckbox())
 
   local backgroundColor = characterVars.BackgroundColor or GetAllianceColor(GetUnitAlliance("player")):ToHex()
   table.insert(optionsData, {

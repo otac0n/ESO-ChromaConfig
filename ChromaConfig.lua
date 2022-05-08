@@ -25,10 +25,10 @@ function ChromaConfig:GetAllainceColor(alliance, inBattleground)
 
   local allianceSettings, getColorFallback
   if inBattleground then
-    allianceSettings = ChromaConfig.accountVars.Teams[alliance]
+    allianceSettings = ChromaConfig.allianceVars.Teams[alliance]
     getColorFallback = GetBattlegroundAllianceColor
   else
-    allianceSettings = ChromaConfig.accountVars.Alliances[alliance]
+    allianceSettings = ChromaConfig.allianceVars.Alliances[alliance]
     getColorFallback = GetAllianceColor
   end
 
