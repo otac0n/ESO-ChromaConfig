@@ -113,7 +113,13 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     name = str.BACKGROUND_COLOR,
   })
 
-  table.insert(optionsData, backgroundVars:GetLibAddonMenuAccountCheckbox())
+  local backgroundAccountCheckbox = backgroundVars:GetLibAddonMenuAccountCheckbox()
+  local setFunc = backgroundAccountCheckbox.setFunc 
+  backgroundAccountCheckbox.setFunc = function (...)
+    setFunc(...)
+    ChromaConfig:ResetAllianceEffects(nil, nil)
+  end
+  table.insert(optionsData, backgroundAccountCheckbox)
 
   local backgroundColor = backgroundVars.BackgroundColor or GetAllianceColor(GetUnitAlliance("player")):ToHex()
   table.insert(optionsData, {
