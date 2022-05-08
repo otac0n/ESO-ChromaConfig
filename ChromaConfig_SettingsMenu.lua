@@ -10,11 +10,11 @@ function ChromaConfigSettingsMenu:Initialize()
   self:CreateOptionsMenu()
 end
 
+local str = ChromaConfig:GetStrings()
 function ChromaConfigSettingsMenu:CreateOptionsMenu()
   local allianceVars = ChromaConfig.allianceVars
   local backgroundVars = ChromaConfig.backgroundVars
   local notificationVars = ChromaConfig.notificationVars
-  local str = ChromaConfig:GetStrings()
 
   local panel = {
     type            = "panel",
@@ -122,41 +122,18 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
   end
   table.insert(optionsData, backgroundAccountCheckbox)
 
-  local backgroundColor = backgroundVars.BackgroundColor or GetAllianceColor(GetUnitAlliance("player")):ToHex()
-  table.insert(optionsData, {
-    type = "checkbox",
-    name = str.USE_CUSTOM_BACKGROUND_COLOR,
-    getFunc = function()
-      return backgroundVars.BackgroundColor ~= nil
-    end,
-    setFunc = function(v)
-      backgroundVars.BackgroundColor = (v and backgroundColor or nil)
+  self:AddToggleColorPicker(
+    optionsData,
+    str.BACKGROUND,
+    function () return backgroundVars.BackgroundColor end,
+    function (v)
+      backgroundVars.BackgroundColor = v
       ChromaConfig:ResetAllianceEffects(nil, false)
       if backgroundVars.UseCustomColorDuringBattlegrounds then
         ChromaConfig:ResetAllianceEffects(nil, true)
       end
     end,
-  })
-
-  table.insert(optionsData, {
-    type = "colorpicker",
-    name = str.CUSTOM_BACKGROUND_COLOR,
-    getFunc = function()
-      return ZO_ColorDef:New(backgroundColor):UnpackRGB()
-    end,
-    setFunc = function(r, g, b)
-      local color = ZO_ColorDef:New(r, g, b, 1)
-      backgroundColor = color:ToHex()
-      backgroundVars.BackgroundColor = backgroundColor
-      ChromaConfig:ResetAllianceEffects(nil, false)
-      if backgroundVars.UseCustomColorDuringBattlegrounds then
-        ChromaConfig:ResetAllianceEffects(nil, true)
-      end
-    end,
-    disabled = function()
-      return not backgroundVars.BackgroundColor
-    end,
-  })
+    GetAllianceColor(GetUnitAlliance("player")):ToHex())
 
   table.insert(optionsData, {
     type = "checkbox",
@@ -185,36 +162,50 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
   end
   table.insert(optionsData, notificationAccountCheckbox)
 
-  local deathEffectColor = notificationVars.DeathEffectColor or ""
+  self:AddToggleColorPicker(
+    optionsData,
+    str.DEATH_EFFECT,
+    function () return notificationVars.DeathEffectColor end,
+    function (v)
+      notificationVars.DeathEffectColor = v
+      ChromaConfig:ResetDeathEffects()
+    end,
+    "ff0000")
+
+  self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)
+  LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", optionsData)
+end
+
+function ChromaConfigSettingsMenu:AddToggleColorPicker(optionsData, name, getFunc, setFunc, default)
+  local intendedColor = getFunc() or default
+  if type(intendedColor) ~= "string" then
+    intendedColor = "000000"
+  end
+
   table.insert(optionsData, {
     type = "checkbox",
-    name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.DEATH_EFFECT),
+    name = zo_strformat(str.USE_CUSTOM_X_COLOR, name),
     getFunc = function()
-      return notificationVars.DeathEffectColor ~= nil
+      return getFunc() ~= nil
     end,
     setFunc = function(v)
-      notificationVars.DeathEffectColor = (v and deathEffectColor or nil)
-      ChromaConfig:ResetDeathEffects()
+      setFunc(v and intendedColor or nil)
     end,
   })
 
   table.insert(optionsData, {
     type = "colorpicker",
-    name = zo_strformat(str.CUSTOM_X_COLOR, str.DEATH_EFFECT),
+    name = zo_strformat(str.CUSTOM_X_COLOR, name),
     getFunc = function()
-      return ZO_ColorDef:New(deathEffectColor):UnpackRGB()
+      return ZO_ColorDef:New(intendedColor):UnpackRGB()
     end,
     setFunc = function(r, g, b)
       local color = ZO_ColorDef:New(r, g, b, 1)
-      deathEffectColor = color:ToHex()
-      notificationVars.DeathEffectColor = deathEffectColor
-      ChromaConfig:ResetDeathEffects()
+      intendedColor = color:ToHex()
+      setFunc(intendedColor)
     end,
     disabled = function()
-      return not notificationVars.DeathEffectColor
+      return not getFunc()
     end,
   })
-
-  self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)
-  LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", optionsData)
 end
