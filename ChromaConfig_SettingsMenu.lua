@@ -107,7 +107,9 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       end,
     })
   end
-  
+
+  table.insert(optionsData, characterVars:GetLibAddonMenuAccountCheckbox())
+
   table.insert(optionsData, {
     type = "header",
     name = str.BACKGROUND_COLOR,

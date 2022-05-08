@@ -11,11 +11,11 @@
 ## Title: |cff0000C|cff8800h|cffff00r|c00ff00o|c4444ffm|cff00ffa|rConfig
 ## APIVersion: 101033
 ## Version: 1.0
-## SavedVariables: ChromaConfig_AccountVars ChromaConfig_CharacterVars
+## SavedVariables: ChromaConfig_Settings
 ## Author: otac0n
 ## Description: A utility for configuring the |c44d62cRazer Chroma™|r functionality
 ## OptionalDependsOn:
-## DependsOn: LibAddonMenu-2.0>=32
+## DependsOn: LibSavedVars LibAddonMenu-2.0>=32
 
 ChromaConfig_Shared.lua
 ChromaConfig_Strings.lua
