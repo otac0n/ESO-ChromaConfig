@@ -124,13 +124,9 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     end,
     setFunc = function(v)
       backgroundVars.BackgroundColor = (v and backgroundColor or nil)
-      for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
-        ChromaConfig:ResetAllianceEffects(alliance, false)
-      end
+      ChromaConfig:ResetAllianceEffects(nil, false)
       if backgroundVars.UseCustomColorDuringBattlegrounds then
-        for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
-          ChromaConfig:ResetAllianceEffects(alliance, true)
-        end
+        ChromaConfig:ResetAllianceEffects(nil, true)
       end
     end,
   })
@@ -145,13 +141,9 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       local color = ZO_ColorDef:New(r, g, b, 1)
       backgroundColor = color:ToHex()
       backgroundVars.BackgroundColor = backgroundColor
-      for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
-        ChromaConfig:ResetAllianceEffects(alliance, false)
-      end
+      ChromaConfig:ResetAllianceEffects(nil, false)
       if backgroundVars.UseCustomColorDuringBattlegrounds then
-        for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
-          ChromaConfig:ResetAllianceEffects(alliance, true)
-        end
+        ChromaConfig:ResetAllianceEffects(nil, true)
       end
     end,
     disabled = function()
@@ -167,9 +159,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     end,
     setFunc = function(v)
       backgroundVars.UseCustomColorDuringBattlegrounds = v
-      for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
-        ChromaConfig:ResetAllianceEffects(alliance, true)
-      end
+      ChromaConfig:ResetAllianceEffects(nil, true)
     end,
     disabled = function()
       return not backgroundVars.BackgroundColor

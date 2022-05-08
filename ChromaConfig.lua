@@ -6,14 +6,7 @@ end)
 
 function ChromaConfig:Initialize()
   ChromaConfig:InitializeSettings()
-
-  for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
-    ChromaConfig:ResetAllianceEffects(alliance, false)
-  end
-  for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
-    ChromaConfig:ResetAllianceEffects(alliance, true)
-  end
-
+  ChromaConfig:ResetAllianceEffects(nil, nil)
   ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
@@ -40,6 +33,24 @@ function ChromaConfig:GetAllainceColor(alliance, inBattleground)
 end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
+  if inBattleground == nil then
+    self:ResetAllianceEffects(alliance, false)
+    self:ResetAllianceEffects(alliance, true)
+    return
+  end
+  if alliance == nil then
+    if inBattleground then
+      for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
+        self:ResetAllianceEffects(alliance, inBattleground)
+      end
+    else
+      for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
+        self:ResetAllianceEffects(alliance, inBattleground)
+      end
+    end
+    return
+  end
+
   local recreate = ZO_RZCHROMA_EFFECTS.activeAlliance == alliance and ZO_RZCHROMA_EFFECTS.inBattleground == inBattleground
 
   local oldEffects = ZO_RZCHROMA_EFFECTS:GetAllianceEffects(alliance, inBattleground)
