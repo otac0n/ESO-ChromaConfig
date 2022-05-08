@@ -11,6 +11,19 @@ function ChromaConfigSettingsMenu:Initialize()
 end
 
 local str = ChromaConfig:GetStrings()
+local function combineRefresh(...)
+  local refresh
+  for k,v in pairs({...}) do
+    if not refresh then
+      refresh = v
+    else
+      local original = refresh
+      refresh = function() original() v() end
+    end
+  end
+  return refresh
+end
+
 function ChromaConfigSettingsMenu:CreateOptionsMenu()
   local allianceVars = ChromaConfig.allianceVars
   local backgroundVars = ChromaConfig.backgroundVars
@@ -165,18 +178,42 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     setFunc(...)
     refresh()
     ChromaConfig:ResetDeathEffects()
+    ChromaConfig:UpdateQuickslotReadyEffect()
+    ChromaConfig:UpdateUltimateReadyEffect()
   end
   table.insert(optionsData, notificationAccountCheckbox)
 
-  refresh = self:AddToggleColorPicker(
-    optionsData,
-    str.DEATH_EFFECT,
-    function () return notificationVars.DeathEffectColor end,
-    function (v)
-      notificationVars.DeathEffectColor = v
-      ChromaConfig:ResetDeathEffects()
-    end,
-    "ff0000"
+  refresh = combineRefresh(
+    self:AddToggleColorPicker(
+      optionsData,
+      str.DEATH_EFFECT,
+      function () return notificationVars.DeathEffectColor end,
+      function (v)
+        notificationVars.DeathEffectColor = v
+        ChromaConfig:ResetDeathEffects()
+      end,
+      "ff0000"
+    ),
+    self:AddToggleColorPicker(
+      optionsData,
+      str.QUICKSLOT_READY,
+      function () return notificationVars.QuickslotReadyColor end,
+      function (v)
+        notificationVars.QuickslotReadyColor = v
+        ChromaConfig:UpdateQuickslotReadyEffect()
+      end,
+      "ffffff"
+    ),
+    self:AddToggleColorPicker(
+      optionsData,
+      str.ULTIMATE_READY,
+      function () return notificationVars.UltimateReadyColor end,
+      function (v)
+        notificationVars.UltimateReadyColor = v
+        ChromaConfig:UpdateUltimateReadyEffect()
+      end,
+      "ffffff"
+    )
   )
 
   self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)

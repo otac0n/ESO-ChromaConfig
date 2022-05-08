@@ -8,6 +8,8 @@ function ChromaConfig:Initialize()
   ChromaConfig:InitializeSettings()
   ChromaConfig:ResetAllianceEffects(nil, nil)
   ChromaConfig:ResetDeathEffects()
+  ChromaConfig:UpdateQuickslotReadyEffect()
+  ChromaConfig:UpdateUltimateReadyEffect()
   ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
@@ -117,4 +119,41 @@ function ChromaConfig:CreateDeathEffects()
     [CHROMA_DEVICE_TYPE_MOUSEPAD] = ZO_ChromaCStyleCustomSingleColorFadingEffect:New(CHROMA_DEVICE_TYPE_MOUSEPAD, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, ZO_CHROMA_ANIMATION_TIMER_DATA.DEATH_PULSATE, deathEffectColor, CHROMA_BLEND_MODE_NORMAL),
     [CHROMA_DEVICE_TYPE_HEADSET] = ZO_ChromaPredefinedEffect:New(CHROMA_DEVICE_TYPE_HEADSET, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, ChromaCreateHeadsetBreathingEffect, r, g, b),
   }
+end
+
+function ChromaConfig:GetQuickslotReadyColor()
+  local hex = ChromaConfig.notificationVars.QuickslotReadyColor
+  if hex then
+    return ZO_ColorDef:New(hex)
+  end
+
+  return ZO_ColorDef:New(1, 1, 1, 1)
+end
+
+function ChromaConfig:UpdateQuickslotReadyEffect()
+  local quickslotReadyColor = self:GetQuickslotReadyColor()
+  ZO_RZCHROMA_EFFECTS:SetVisualDataForKeybindAction("ACTION_BUTTON_9", ZO_CHROMA_ANIMATION_TIMER_DATA.QUICKSLOT_ONE_PULSE, quickslotReadyColor, CHROMA_BLEND_MODE_NORMAL, ZO_CHROMA_EFFECT_DRAW_LEVEL.ACTIVE_KEY_ACTION)
+  self:ResetKeybindActionEffect("ACTION_BUTTON_9")
+end
+
+function ChromaConfig:GetUltimateReadyColor()
+  local hex = ChromaConfig.notificationVars.UltimateReadyColor
+  if hex then
+    return ZO_ColorDef:New(hex)
+  end
+
+  return ZO_ColorDef:New(1, 1, 1, 1)
+end
+
+function ChromaConfig:UpdateUltimateReadyEffect()
+  local ultimateReadyColor = self:GetUltimateReadyColor()
+  ZO_RZCHROMA_EFFECTS:SetVisualDataForKeybindAction("ACTION_BUTTON_8", ZO_CHROMA_ANIMATION_TIMER_DATA.ULTIMATE_ONE_PULSE, ultimateReadyColor, CHROMA_BLEND_MODE_NORMAL, ZO_CHROMA_EFFECT_DRAW_LEVEL.ACTIVE_KEY_ACTION)
+  self:ResetKeybindActionEffect("ACTION_BUTTON_8")
+end
+
+function ChromaConfig:ResetKeybindActionEffect(actionName)
+  if ZO_RZCHROMA_EFFECTS.keybindActionEffects[actionName] then
+    ZO_RZCHROMA_EFFECTS:RemoveKeybindActionEffect(actionName)
+    ZO_RZCHROMA_EFFECTS:AddKeybindActionEffect(actionName)
+  end
 end

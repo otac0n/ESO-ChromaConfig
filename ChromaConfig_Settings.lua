@@ -37,6 +37,8 @@ local defaultBackgroundVars = {
 
 local defaultNotificationVars = {
   DeathEffectColor = nil,
+  QuickslotReadyColor = nil,
+  UltimateReadyColor = nil,
 }
 
 function ChromaConfig:InitializeSettings()
