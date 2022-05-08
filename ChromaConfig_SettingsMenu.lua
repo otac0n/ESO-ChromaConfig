@@ -42,8 +42,8 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
   }
 
   local optionsData = {}
-  local accountControls = {}
 
+  local accountControls = {}
   table.insert(optionsData, {
     type = "submenu",
     name = str.ALLIANCE_SETTINGS,
@@ -85,7 +85,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       end,
     })
   end
-  
+
   table.insert(accountControls, {
     type = "header",
     name = str.BATTLEGROUNDS_HEADER,
@@ -122,9 +122,11 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     })
   end
 
+  local backgroundControls = {}
   table.insert(optionsData, {
-    type = "header",
+    type = "submenu",
     name = str.BACKGROUND_COLOR,
+    controls = backgroundControls,
   })
 
   local backgroundAccountCheckbox = backgroundVars:GetLibAddonMenuAccountCheckbox()
@@ -135,10 +137,10 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     refresh()
     ChromaConfig:ResetAllianceEffects(nil, nil)
   end
-  table.insert(optionsData, backgroundAccountCheckbox)
+  table.insert(backgroundControls, backgroundAccountCheckbox)
 
   refresh = self:AddToggleColorPicker(
-    optionsData,
+    backgroundControls,
     str.BACKGROUND,
     function () return backgroundVars.BackgroundColor end,
     function (v)
@@ -151,7 +153,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     GetAllianceColor(GetUnitAlliance("player")):ToHex()
   )
 
-  table.insert(optionsData, {
+  table.insert(backgroundControls, {
     type = "checkbox",
     name = str.USE_DURING_BATTLEGROUND,
     getFunc = function()
@@ -166,9 +168,11 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     end,
   })
 
+  local notificationControls = {}
   table.insert(optionsData, {
-    type = "header",
+    type = "submenu",
     name = str.NOTIFICATION_COLORS,
+    controls = notificationControls,
   })
 
   local notificationAccountCheckbox = notificationVars:GetLibAddonMenuAccountCheckbox()
@@ -181,11 +185,11 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     ChromaConfig:UpdateQuickslotReadyEffect()
     ChromaConfig:UpdateUltimateReadyEffect()
   end
-  table.insert(optionsData, notificationAccountCheckbox)
+  table.insert(notificationControls, notificationAccountCheckbox)
 
   refresh = combineRefresh(
     self:AddToggleColorPicker(
-      optionsData,
+      notificationControls,
       str.DEATH_EFFECT,
       function () return notificationVars.DeathEffectColor end,
       function (v)
@@ -195,7 +199,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       "ff0000"
     ),
     self:AddToggleColorPicker(
-      optionsData,
+      notificationControls,
       str.QUICKSLOT_READY,
       function () return notificationVars.QuickslotReadyColor end,
       function (v)
@@ -205,7 +209,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       "ffffff"
     ),
     self:AddToggleColorPicker(
-      optionsData,
+      notificationControls,
       str.ULTIMATE_READY,
       function () return notificationVars.UltimateReadyColor end,
       function (v)
