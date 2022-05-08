@@ -135,7 +135,8 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
         ChromaConfig:ResetAllianceEffects(nil, true)
       end
     end,
-    GetAllianceColor(GetUnitAlliance("player")):ToHex())
+    GetAllianceColor(GetUnitAlliance("player")):ToHex()
+  )
 
   table.insert(optionsData, {
     type = "checkbox",
@@ -175,7 +176,8 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       notificationVars.DeathEffectColor = v
       ChromaConfig:ResetDeathEffects()
     end,
-    "ff0000")
+    "ff0000"
+  )
 
   self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)
   LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", optionsData)
