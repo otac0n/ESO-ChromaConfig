@@ -13,6 +13,7 @@ end
 function ChromaConfigSettingsMenu:CreateOptionsMenu()
   local allianceVars = ChromaConfig.allianceVars
   local backgroundVars = ChromaConfig.backgroundVars
+  local notificationVars = ChromaConfig.notificationVars
   local str = ChromaConfig:GetStrings()
 
   local panel = {
@@ -169,6 +170,48 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     end,
     disabled = function()
       return not backgroundVars.BackgroundColor
+    end,
+  })
+
+  table.insert(optionsData, {
+    type = "header",
+    name = str.NOTIFICATION_COLORS,
+  })
+
+  local notificationAccountCheckbox = notificationVars:GetLibAddonMenuAccountCheckbox()
+  local setFunc = notificationAccountCheckbox.setFunc 
+  notificationAccountCheckbox.setFunc = function (...)
+    setFunc(...)
+  end
+  table.insert(optionsData, notificationAccountCheckbox)
+
+  local deathEffectColor = notificationVars.DeathEffectColor or ""
+  table.insert(optionsData, {
+    type = "checkbox",
+    name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.DEATH_EFFECT),
+    getFunc = function()
+      return notificationVars.DeathEffectColor ~= nil
+    end,
+    setFunc = function(v)
+      notificationVars.DeathEffectColor = (v and deathEffectColor or nil)
+      ChromaConfig:ResetDeathEffects()
+    end,
+  })
+
+  table.insert(optionsData, {
+    type = "colorpicker",
+    name = zo_strformat(str.CUSTOM_X_COLOR, str.DEATH_EFFECT),
+    getFunc = function()
+      return ZO_ColorDef:New(deathEffectColor):UnpackRGB()
+    end,
+    setFunc = function(r, g, b)
+      local color = ZO_ColorDef:New(r, g, b, 1)
+      deathEffectColor = color:ToHex()
+      notificationVars.DeathEffectColor = deathEffectColor
+      ChromaConfig:ResetDeathEffects()
+    end,
+    disabled = function()
+      return not notificationVars.DeathEffectColor
     end,
   })
 

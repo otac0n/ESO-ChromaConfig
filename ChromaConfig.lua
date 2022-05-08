@@ -7,6 +7,7 @@ end)
 function ChromaConfig:Initialize()
   ChromaConfig:InitializeSettings()
   ChromaConfig:ResetAllianceEffects(nil, nil)
+  ChromaConfig:ResetDeathEffects()
   ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
@@ -78,5 +79,42 @@ function ChromaConfig:CreateAllianceEffects(alliance, inBattleground)
     [CHROMA_DEVICE_TYPE_MOUSE] = ZO_ChromaCStyleCustomSingleColorEffect:New(CHROMA_DEVICE_TYPE_MOUSE, ZO_CHROMA_EFFECT_DRAW_LEVEL.FALLBACK, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, NO_ANIMATION_TIMER, allianceColor, CHROMA_BLEND_MODE_NORMAL),
     [CHROMA_DEVICE_TYPE_MOUSEPAD] = ZO_ChromaCStyleCustomSingleColorEffect:New(CHROMA_DEVICE_TYPE_MOUSEPAD, ZO_CHROMA_EFFECT_DRAW_LEVEL.FALLBACK, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, NO_ANIMATION_TIMER, allianceColor, CHROMA_BLEND_MODE_NORMAL),
     [CHROMA_DEVICE_TYPE_HEADSET] = ZO_ChromaPredefinedEffect:New(CHROMA_DEVICE_TYPE_HEADSET, ZO_CHROMA_EFFECT_DRAW_LEVEL.FALLBACK, ChromaCreateHeadsetStaticEffect, r, g, b),
+  }
+end
+
+function ChromaConfig:GetDeathEffectColor()
+  local hex = ChromaConfig.notificationVars.DeathEffectColor
+  if hex then
+    return ZO_ColorDef:New(hex)
+  end
+
+  return ZO_ColorDef:New(1, 0, 0, 1)
+end
+
+function ChromaConfig:ResetDeathEffects()
+  local recreate = IsUnitDead("player")
+
+  local oldEffects = ZO_RZCHROMA_EFFECTS.deathEffects
+  local newEffects = self:CreateDeathEffects()
+
+  for deviceType, newEffect in pairs(newEffects) do
+    local oldEffect = oldEffects[deviceType]
+    oldEffects[deviceType] = newEffect
+    if recreate then
+      ZO_RZCHROMA_MANAGER:RemoveEffect(oldEffect)
+      ZO_RZCHROMA_MANAGER:AddEffect(newEffect)
+    end
+  end
+end
+
+function ChromaConfig:CreateDeathEffects()
+  local deathEffectColor = self:GetDeathEffectColor()
+  local r, g, b = deathEffectColor:UnpackRGB()
+  return {
+    [CHROMA_DEVICE_TYPE_KEYBOARD] = ZO_ChromaCStyleCustomSingleColorFadingEffect:New(CHROMA_DEVICE_TYPE_KEYBOARD, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, ZO_CHROMA_ANIMATION_TIMER_DATA.DEATH_PULSATE, deathEffectColor, CHROMA_BLEND_MODE_NORMAL),
+    [CHROMA_DEVICE_TYPE_KEYPAD] = ZO_ChromaCStyleCustomSingleColorFadingEffect:New(CHROMA_DEVICE_TYPE_KEYPAD, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, ZO_CHROMA_ANIMATION_TIMER_DATA.DEATH_PULSATE, deathEffectColor, CHROMA_BLEND_MODE_NORMAL),
+    [CHROMA_DEVICE_TYPE_MOUSE] = ZO_ChromaCStyleCustomSingleColorFadingEffect:New(CHROMA_DEVICE_TYPE_MOUSE, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, ZO_CHROMA_ANIMATION_TIMER_DATA.DEATH_PULSATE, deathEffectColor, CHROMA_BLEND_MODE_NORMAL),
+    [CHROMA_DEVICE_TYPE_MOUSEPAD] = ZO_ChromaCStyleCustomSingleColorFadingEffect:New(CHROMA_DEVICE_TYPE_MOUSEPAD, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, CHROMA_CUSTOM_EFFECT_GRID_STYLE_FULL, ZO_CHROMA_ANIMATION_TIMER_DATA.DEATH_PULSATE, deathEffectColor, CHROMA_BLEND_MODE_NORMAL),
+    [CHROMA_DEVICE_TYPE_HEADSET] = ZO_ChromaPredefinedEffect:New(CHROMA_DEVICE_TYPE_HEADSET, ZO_CHROMA_EFFECT_DRAW_LEVEL.DEATH, ChromaCreateHeadsetBreathingEffect, r, g, b),
   }
 end

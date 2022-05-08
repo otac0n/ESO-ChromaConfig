@@ -35,6 +35,10 @@ local defaultBackgroundVars = {
   UseCustomColorDuringBattlegrounds = false,
 }
 
+local defaultNotificationVars = {
+  DeathEffectColor = nil,
+}
+
 function ChromaConfig:InitializeSettings()
   ChromaConfig.allianceVars = LibSavedVars
     :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Alliance", defaultAllianceVars)
@@ -42,5 +46,9 @@ function ChromaConfig:InitializeSettings()
   ChromaConfig.backgroundVars = LibSavedVars
     :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Background_Account", defaultBackgroundVars)
     :AddCharacterSettingsToggle(ChromaConfig.ADDON_NAME.."_Settings", "Background_Character")
+    :EnableDefaultsTrimming()
+  ChromaConfig.notificationVars = LibSavedVars
+    :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Notification_Account", defaultNotificationVars)
+    :AddCharacterSettingsToggle(ChromaConfig.ADDON_NAME.."_Settings", "Notification_Character")
     :EnableDefaultsTrimming()
 end
