@@ -39,7 +39,7 @@ function ChromaConfig:InitializeSettings()
   ChromaConfig.allianceVars = LibSavedVars
     :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Alliance", defaultAllianceVars)
     :EnableDefaultsTrimming()
-  ChromaConfig.characterVars = LibSavedVars
+  ChromaConfig.backgroundVars = LibSavedVars
     :NewAccountWide(ChromaConfig.ADDON_NAME.."_Settings", "Background_Account", defaultBackgroundVars)
     :AddCharacterSettingsToggle(ChromaConfig.ADDON_NAME.."_Settings", "Background_Character")
     :EnableDefaultsTrimming()

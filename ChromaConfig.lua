@@ -18,8 +18,8 @@ function ChromaConfig:Initialize()
 end
 
 function ChromaConfig:GetAllainceColor(alliance, inBattleground)
-  local hex = ChromaConfig.characterVars.BackgroundColor
-  if hex and (not inBattleground or ChromaConfig.characterVars.UseCustomColorDuringBattlegrounds) then
+  local hex = ChromaConfig.backgroundVars.BackgroundColor
+  if hex and (not inBattleground or ChromaConfig.backgroundVars.UseCustomColorDuringBattlegrounds) then
     return ZO_ColorDef:New(hex)
   end
 

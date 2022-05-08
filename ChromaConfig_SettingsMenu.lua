@@ -12,7 +12,7 @@ end
 
 function ChromaConfigSettingsMenu:CreateOptionsMenu()
   local allianceVars = ChromaConfig.allianceVars
-  local characterVars = ChromaConfig.characterVars
+  local backgroundVars = ChromaConfig.backgroundVars
   local str = ChromaConfig:GetStrings()
 
   local panel = {
@@ -113,21 +113,21 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     name = str.BACKGROUND_COLOR,
   })
 
-  table.insert(optionsData, characterVars:GetLibAddonMenuAccountCheckbox())
+  table.insert(optionsData, backgroundVars:GetLibAddonMenuAccountCheckbox())
 
-  local backgroundColor = characterVars.BackgroundColor or GetAllianceColor(GetUnitAlliance("player")):ToHex()
+  local backgroundColor = backgroundVars.BackgroundColor or GetAllianceColor(GetUnitAlliance("player")):ToHex()
   table.insert(optionsData, {
     type = "checkbox",
     name = str.USE_CUSTOM_BACKGROUND_COLOR,
     getFunc = function()
-      return characterVars.BackgroundColor ~= nil
+      return backgroundVars.BackgroundColor ~= nil
     end,
     setFunc = function(v)
-      characterVars.BackgroundColor = (v and backgroundColor or nil)
+      backgroundVars.BackgroundColor = (v and backgroundColor or nil)
       for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
         ChromaConfig:ResetAllianceEffects(alliance, false)
       end
-      if characterVars.UseCustomColorDuringBattlegrounds then
+      if backgroundVars.UseCustomColorDuringBattlegrounds then
         for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
           ChromaConfig:ResetAllianceEffects(alliance, true)
         end
@@ -144,18 +144,18 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     setFunc = function(r, g, b)
       local color = ZO_ColorDef:New(r, g, b, 1)
       backgroundColor = color:ToHex()
-      characterVars.BackgroundColor = backgroundColor
+      backgroundVars.BackgroundColor = backgroundColor
       for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
         ChromaConfig:ResetAllianceEffects(alliance, false)
       end
-      if characterVars.UseCustomColorDuringBattlegrounds then
+      if backgroundVars.UseCustomColorDuringBattlegrounds then
         for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
           ChromaConfig:ResetAllianceEffects(alliance, true)
         end
       end
     end,
     disabled = function()
-      return not characterVars.BackgroundColor
+      return not backgroundVars.BackgroundColor
     end,
   })
 
@@ -163,16 +163,16 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     type = "checkbox",
     name = str.USE_DURING_BATTLEGROUND,
     getFunc = function()
-      return characterVars.UseCustomColorDuringBattlegrounds
+      return backgroundVars.UseCustomColorDuringBattlegrounds
     end,
     setFunc = function(v)
-      characterVars.UseCustomColorDuringBattlegrounds = v
+      backgroundVars.UseCustomColorDuringBattlegrounds = v
       for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
         ChromaConfig:ResetAllianceEffects(alliance, true)
       end
     end,
     disabled = function()
-      return not characterVars.BackgroundColor
+      return not backgroundVars.BackgroundColor
     end,
   })
 
