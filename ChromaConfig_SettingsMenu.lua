@@ -27,15 +27,22 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     registerForRefresh = true
   }
 
-  local optionsData = { }
+  local optionsData = {}
+  local accountControls = {}
 
   table.insert(optionsData, {
+    type = "submenu",
+    name = str.ACCOUNT_SETTINGS,
+    controls = accountControls,
+  })
+
+  table.insert(accountControls, {
     type = "header",
     name = str.ALLIANCE_HEADER,
   })
 
   for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
-    table.insert(optionsData, {
+    table.insert(accountControls, {
       type = "checkbox",
       name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       getFunc = function()
@@ -47,7 +54,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       end,
     })
 
-    table.insert(optionsData, {
+    table.insert(accountControls, {
       type = "colorpicker",
       name = zo_strformat(str.CUSTOM_X_COLOR, str.ALLIANCES[alliance].NAME),
       tooltip = str.ALLIANCES[alliance].TOOLTIP,
@@ -65,13 +72,13 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     })
   end
   
-  table.insert(optionsData, {
+  table.insert(accountControls, {
     type = "header",
     name = str.BATTLEGROUNDS_HEADER,
   })
 
   for alliance = BATTLEGROUND_ALLIANCE_ITERATION_BEGIN, BATTLEGROUND_ALLIANCE_ITERATION_END do
-    table.insert(optionsData, {
+    table.insert(accountControls, {
       type = "checkbox",
       name = zo_strformat(str.USE_CUSTOM_X_COLOR, str.BATTLEGROUND_ALLIANCES[alliance].NAME),
       getFunc = function()
@@ -83,7 +90,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
       end,
     })
 
-    table.insert(optionsData, {
+    table.insert(accountControls, {
       type = "colorpicker",
       name = zo_strformat(str.CUSTOM_X_COLOR, str.BATTLEGROUND_ALLIANCES[alliance].NAME),
       tooltip = str.BATTLEGROUND_ALLIANCES[alliance].TOOLTIP,
