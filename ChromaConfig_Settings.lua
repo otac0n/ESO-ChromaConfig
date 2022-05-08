@@ -30,6 +30,12 @@ local defaultAccountVars = {
   },
 }
 
+local defaultCharacterVars = {
+  BackgroundColor = nil,
+  UseCustomColorDuringBattlegrounds = false,
+}
+
 function ChromaConfig:InitializeSettings()
   ChromaConfig.accountVars = ZO_SavedVars:NewAccountWide(ChromaConfig.ADDON_NAME.."_AccountVars", ChromaConfig.variableVersion, nil, defaultAccountVars, GetWorldName())
+  ChromaConfig.characterVars = ZO_SavedVars:NewCharacterIdSettings(ChromaConfig.ADDON_NAME.."_CharacterVars", ChromaConfig.variableVersion, nil, defaultCharacterVars, GetWorldName())
 end

@@ -11,7 +11,7 @@
 ## Title: |cff0000C|cff8800h|cffff00r|c00ff00o|c4444ffm|cff00ffa|rConfig
 ## APIVersion: 101033
 ## Version: 1.0
-## SavedVariables: ChromaConfig_AccountVars
+## SavedVariables: ChromaConfig_AccountVars ChromaConfig_CharacterVars
 ## Author: otac0n
 ## Description: A utility for configuring the |c44d62cRazer Chroma™|r functionality
 ## OptionalDependsOn:

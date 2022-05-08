@@ -1,10 +1,10 @@
 ﻿EVENT_MANAGER:RegisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED, function (eventCode, name)
   if name ~= ChromaConfig.ADDON_NAME then return end
-  ChromaConfig:Init()
+  ChromaConfig:Initialize()
   EVENT_MANAGER:UnregisterForEvent(ChromaConfig.ADDON_NAME, EVENT_ADD_ON_LOADED)
 end)
 
-function ChromaConfig:Init()
+function ChromaConfig:Initialize()
   ChromaConfig:InitializeSettings()
 
   for alliance = ALLIANCE_ITERATION_BEGIN, ALLIANCE_ITERATION_END do
@@ -17,19 +17,33 @@ function ChromaConfig:Init()
   ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
-function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
-  local newColor
-  if ChromaConfig.accountVars.Alliances[alliance].UseCustomColor then
-    newColor = ZO_ColorDef:New(ChromaConfig.accountVars.Alliances[alliance].Color)
-  else
-    local getColorFallback = inBattleground and GetBattlegroundAllianceColor or GetAllianceColor
-    newColor = getColorFallback(alliance)
+function ChromaConfig:GetAllainceColor(alliance, inBattleground)
+  local hex = ChromaConfig.characterVars.BackgroundColor
+  if hex and (not inBattleground or ChromaConfig.characterVars.UseCustomColorDuringBattlegrounds) then
+    return ZO_ColorDef:New(hex)
   end
 
+  local allianceSettings, getColorFallback
+  if inBattleground then
+    allianceSettings = ChromaConfig.accountVars.Teams[alliance]
+    getColorFallback = GetBattlegroundAllianceColor
+  else
+    allianceSettings = ChromaConfig.accountVars.Alliances[alliance]
+    getColorFallback = GetAllianceColor
+  end
+
+  if allianceSettings.UseCustomColor then
+    return ZO_ColorDef:New(allianceSettings.Color)
+  else
+    return getColorFallback(alliance)
+  end
+end
+
+function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
   local recreate = ZO_RZCHROMA_EFFECTS.activeAlliance == alliance and ZO_RZCHROMA_EFFECTS.inBattleground == inBattleground
 
   local oldEffects = ZO_RZCHROMA_EFFECTS:GetAllianceEffects(alliance, inBattleground)
-  local newEffects = self:CreateAllianceEffects(newColor)
+  local newEffects = self:CreateAllianceEffects(alliance, inBattleground)
 
   for deviceType, newEffect in pairs(newEffects) do
     local oldEffect = oldEffects[deviceType]
@@ -41,7 +55,8 @@ function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
   end
 end
 
-function ChromaConfig:CreateAllianceEffects(allianceColor)
+function ChromaConfig:CreateAllianceEffects(alliance, inBattleground)
+  local allianceColor = self:GetAllainceColor(alliance, inBattleground)
   allianceColor = allianceColor:Clone()
   allianceColor:SetAlpha(ZO_CHROMA_UNDERLAY_ALPHA)
   local r, g, b = allianceColor:UnpackRGB()
