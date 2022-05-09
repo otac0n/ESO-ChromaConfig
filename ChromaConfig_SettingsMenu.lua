@@ -186,7 +186,28 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
   end
   table.insert(notificationControls, notificationAccountCheckbox)
 
-  local refreshes = {
+  local refreshes = {}
+
+  for actionName,data in pairs(ChromaConfig.StaticData.Keybinds) do
+    if actionName:find("^DEATH_") == nil then
+      table.insert(
+        refreshes,
+        self:AddToggleColorPicker(
+          notificationControls,
+          zo_strformat(str.KEYBIND_READY, str.KEYBINDS[actionName]),
+          function () return notificationVars.Keybinds[actionName].Color end,
+          function (v)
+            notificationVars.Keybinds[actionName].Color = v
+            ChromaConfig:ResetKeybindActionEffects(actionName)
+          end,
+          data.DefaultColor
+        )
+      )
+    end
+  end
+
+  table.insert(
+    refreshes,
     self:AddToggleColorPicker(
       notificationControls,
       str.DEATH_EFFECT,
@@ -195,24 +216,53 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
         notificationVars.DeathEffectColor = v
         ChromaConfig:ResetDeathEffects()
       end,
+      "ffffff"
+    )
+  )
+
+  table.insert(
+    refreshes,
+    self:AddToggleColorPicker(
+      notificationControls,
+      str.DEATH_KEYBINDS,
+      function () return notificationVars.DeathKeybindColor end,
+      function (v)
+        notificationVars.DeathKeybindColor = v
+        for actionName,data in pairs(ChromaConfig.StaticData.Keybinds) do
+          if actionName:find("^DEATH_") ~= nil then
+            ChromaConfig:ResetKeybindActionEffects(actionName)
+          end
+        end
+      end,
       "ff0000"
     )
-  }
+  )
+
+  local deathKeybindControls = {}
+  table.insert(notificationControls, {
+    type = "submenu",
+    name = str.DEATH_KEYBINDS_HEADER,
+    controls = deathKeybindControls,
+  })
+
   for actionName,data in pairs(ChromaConfig.StaticData.Keybinds) do
-    table.insert(
-      refreshes,
-      self:AddToggleColorPicker(
-        notificationControls,
-        zo_strformat(str.KEYBIND_READY, str.KEYBINDS[actionName]),
-        function () return notificationVars.Keybinds[actionName].Color end,
-        function (v)
-          notificationVars.Keybinds[actionName].Color = v
-          ChromaConfig:ResetKeybindActionEffects(actionName)
-        end,
-        data.DefaultColor
+    if actionName:find("^DEATH_") ~= nil then
+      table.insert(
+        refreshes,
+        self:AddToggleColorPicker(
+          deathKeybindControls,
+          str.KEYBINDS[actionName],
+          function () return notificationVars.Keybinds[actionName].Color end,
+          function (v)
+            notificationVars.Keybinds[actionName].Color = v
+            ChromaConfig:ResetKeybindActionEffects(actionName)
+          end,
+          data.DefaultColor
+        )
       )
-    )
+    end
   end
+
   refresh = combineRefresh(unpack(refreshes))
 
   self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)

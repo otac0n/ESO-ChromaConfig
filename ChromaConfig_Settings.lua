@@ -37,6 +37,7 @@ local defaultBackgroundVars = {
 
 local defaultNotificationVars = {
   DeathEffectColor = nil,
+  DeathKeybindColor = nil,
   Keybinds = {
   },
 }

@@ -122,11 +122,15 @@ end
 
 function ChromaConfig:GetKeybindColor(actionName)
   local hex = ChromaConfig.notificationVars.Keybinds[actionName].Color
+  if not hex and actionName:find("^DEATH_") ~= nil then
+    hex = ChromaConfig.notificationVars.DeathKeybindColor
+  end
+
   if hex then
     return ZO_ColorDef:New(hex)
   end
 
-  return ZO_ColorDef:New(1, 1, 1, 1)
+  return ZO_ColorDef:New(self.StaticData.Keybinds[actionName].DefaultColor)
 end
 
 function ChromaConfig:ResetKeybindActionEffects(actionName)
