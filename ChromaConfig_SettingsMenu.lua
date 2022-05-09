@@ -216,7 +216,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
         notificationVars.DeathEffectColor = v
         ChromaConfig:ResetDeathEffects()
       end,
-      "ffffff"
+      "ff0000"
     )
   )
 
@@ -234,7 +234,7 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
           end
         end
       end,
-      "ff0000"
+      "ffffff"
     )
   )
 
