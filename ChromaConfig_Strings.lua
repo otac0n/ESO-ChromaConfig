@@ -10,8 +10,11 @@ local localizedStrings = {
     USE_DURING_BATTLEGROUND = "Use this color during battlegrounds matches",
     NOTIFICATION_COLORS = "Notification Colors",
     DEATH_EFFECT = "death effect",
-    QUICKSLOT_READY = "quickslot ready",
-    ULTIMATE_READY = "ultimate ready",
+    KEYBIND_READY = "<<1>> ready",
+    KEYBINDS = {
+      ACTION_BUTTON_8 = "ultimate",
+      ACTION_BUTTON_9 = "quickslot",
+    },
     ALLIANCES = {
       [ALLIANCE_ALDMERI_DOMINION] = {
         TOOLTIP = "Typically a shade of yellow.",

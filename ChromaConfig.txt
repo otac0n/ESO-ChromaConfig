@@ -18,6 +18,7 @@
 ## DependsOn: LibSavedVars LibAddonMenu-2.0>=32
 
 ChromaConfig_Shared.lua
+ChromaConfig_StaticData.lua
 ChromaConfig_Strings.lua
 ChromaConfig_Settings.lua
 ChromaConfig_SettingsMenu.lua

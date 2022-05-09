@@ -8,8 +8,7 @@ function ChromaConfig:Initialize()
   ChromaConfig:InitializeSettings()
   ChromaConfig:ResetAllianceEffects(nil, nil)
   ChromaConfig:ResetDeathEffects()
-  ChromaConfig:UpdateQuickslotReadyEffect()
-  ChromaConfig:UpdateUltimateReadyEffect()
+  ChromaConfig:ResetKeybindActionEffects()
   ChromaConfig.settingsMenu = ChromaConfigSettingsMenu:New()
 end
 
@@ -121,8 +120,8 @@ function ChromaConfig:CreateDeathEffects()
   }
 end
 
-function ChromaConfig:GetQuickslotReadyColor()
-  local hex = ChromaConfig.notificationVars.QuickslotReadyColor
+function ChromaConfig:GetKeybindColor(actionName)
+  local hex = ChromaConfig.notificationVars.Keybinds[actionName].Color
   if hex then
     return ZO_ColorDef:New(hex)
   end
@@ -130,28 +129,18 @@ function ChromaConfig:GetQuickslotReadyColor()
   return ZO_ColorDef:New(1, 1, 1, 1)
 end
 
-function ChromaConfig:UpdateQuickslotReadyEffect()
-  local quickslotReadyColor = self:GetQuickslotReadyColor()
-  ZO_RZCHROMA_EFFECTS:SetVisualDataForKeybindAction("ACTION_BUTTON_9", ZO_CHROMA_ANIMATION_TIMER_DATA.QUICKSLOT_ONE_PULSE, quickslotReadyColor, CHROMA_BLEND_MODE_NORMAL, ZO_CHROMA_EFFECT_DRAW_LEVEL.ACTIVE_KEY_ACTION)
-  self:ResetKeybindActionEffect("ACTION_BUTTON_9")
-end
-
-function ChromaConfig:GetUltimateReadyColor()
-  local hex = ChromaConfig.notificationVars.UltimateReadyColor
-  if hex then
-    return ZO_ColorDef:New(hex)
+function ChromaConfig:ResetKeybindActionEffects(actionName)
+  if actionName == nil then
+    for k,v in pairs(self.StaticData.Keybinds) do
+      self:ResetKeybindActionEffects(k)
+    end
+    return
   end
 
-  return ZO_ColorDef:New(1, 1, 1, 1)
-end
+  local quickslotReadyColor = self:GetKeybindColor(actionName)
+  local existingVisualData = ZO_RZCHROMA_EFFECTS.keybindActionVisualData[actionName]
 
-function ChromaConfig:UpdateUltimateReadyEffect()
-  local ultimateReadyColor = self:GetUltimateReadyColor()
-  ZO_RZCHROMA_EFFECTS:SetVisualDataForKeybindAction("ACTION_BUTTON_8", ZO_CHROMA_ANIMATION_TIMER_DATA.ULTIMATE_ONE_PULSE, ultimateReadyColor, CHROMA_BLEND_MODE_NORMAL, ZO_CHROMA_EFFECT_DRAW_LEVEL.ACTIVE_KEY_ACTION)
-  self:ResetKeybindActionEffect("ACTION_BUTTON_8")
-end
-
-function ChromaConfig:ResetKeybindActionEffect(actionName)
+  ZO_RZCHROMA_EFFECTS:SetVisualDataForKeybindAction(actionName, existingVisualData.animationTimerData, quickslotReadyColor, existingVisualData.blendMode, existingVisualData.level)
   if ZO_RZCHROMA_EFFECTS.keybindActionEffects[actionName] then
     ZO_RZCHROMA_EFFECTS:RemoveKeybindActionEffect(actionName)
     ZO_RZCHROMA_EFFECTS:AddKeybindActionEffect(actionName)

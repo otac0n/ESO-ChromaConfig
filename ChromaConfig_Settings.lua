@@ -37,9 +37,14 @@ local defaultBackgroundVars = {
 
 local defaultNotificationVars = {
   DeathEffectColor = nil,
-  QuickslotReadyColor = nil,
-  UltimateReadyColor = nil,
+  Keybinds = {
+  },
 }
+for k,v in pairs(ChromaConfig.StaticData.Keybinds) do
+  defaultNotificationVars.Keybinds[k] = {
+    Color = nil,
+  }
+end
 
 function ChromaConfig:InitializeSettings()
   ChromaConfig.allianceVars = LibSavedVars

@@ -182,12 +182,11 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
     setFunc(...)
     refresh()
     ChromaConfig:ResetDeathEffects()
-    ChromaConfig:UpdateQuickslotReadyEffect()
-    ChromaConfig:UpdateUltimateReadyEffect()
+    ChromaConfig:ResetKeybindActionEffects()
   end
   table.insert(notificationControls, notificationAccountCheckbox)
 
-  refresh = combineRefresh(
+  local refreshes = {
     self:AddToggleColorPicker(
       notificationControls,
       str.DEATH_EFFECT,
@@ -197,28 +196,24 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
         ChromaConfig:ResetDeathEffects()
       end,
       "ff0000"
-    ),
-    self:AddToggleColorPicker(
-      notificationControls,
-      str.QUICKSLOT_READY,
-      function () return notificationVars.QuickslotReadyColor end,
-      function (v)
-        notificationVars.QuickslotReadyColor = v
-        ChromaConfig:UpdateQuickslotReadyEffect()
-      end,
-      "ffffff"
-    ),
-    self:AddToggleColorPicker(
-      notificationControls,
-      str.ULTIMATE_READY,
-      function () return notificationVars.UltimateReadyColor end,
-      function (v)
-        notificationVars.UltimateReadyColor = v
-        ChromaConfig:UpdateUltimateReadyEffect()
-      end,
-      "ffffff"
     )
-  )
+  }
+  for actionName,data in pairs(ChromaConfig.StaticData.Keybinds) do
+    table.insert(
+      refreshes,
+      self:AddToggleColorPicker(
+        notificationControls,
+        zo_strformat(str.KEYBIND_READY, str.KEYBINDS[actionName]),
+        function () return notificationVars.Keybinds[actionName].Color end,
+        function (v)
+          notificationVars.Keybinds[actionName].Color = v
+          ChromaConfig:ResetKeybindActionEffects(actionName)
+        end,
+        data.DefaultColor
+      )
+    )
+  end
+  refresh = combineRefresh(unpack(refreshes))
 
   self.settingsMenuPanel = LibAddonMenu2:RegisterAddonPanel(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", panel)
   LibAddonMenu2:RegisterOptionControls(ChromaConfig.ADDON_NAME.."SettingsMenuPanel", optionsData)
