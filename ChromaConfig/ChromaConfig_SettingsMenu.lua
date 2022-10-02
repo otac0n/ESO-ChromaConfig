@@ -43,6 +43,13 @@ function ChromaConfigSettingsMenu:CreateOptionsMenu()
 
   local optionsData = {}
 
+  if not ChromaConfig.active then
+    table.insert(optionsData, {
+      type = "description",
+      title = str.CHROMA_NOT_ENABLED_WARNING,
+    })
+  end
+
   local accountControls = {}
   table.insert(optionsData, {
     type = "submenu",

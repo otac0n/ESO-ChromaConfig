@@ -5,6 +5,7 @@
 end)
 
 function ChromaConfig:Initialize()
+  ChromaConfig.active = IsChromaSystemAvailable()
   ChromaConfig:InitializeSettings()
   ChromaConfig:ResetAllianceEffects(nil, nil)
   ChromaConfig:ResetDeathEffects()
@@ -35,6 +36,7 @@ function ChromaConfig:GetAllainceColor(alliance, inBattleground)
 end
 
 function ChromaConfig:ResetAllianceEffects(alliance, inBattleground)
+  if not ChromaConfig.active then return end
   if inBattleground == nil then
     self:ResetAllianceEffects(alliance, false)
     self:ResetAllianceEffects(alliance, true)
@@ -93,6 +95,7 @@ function ChromaConfig:GetDeathEffectColor()
 end
 
 function ChromaConfig:ResetDeathEffects()
+  if not ChromaConfig.active then return end
   local recreate = IsUnitDead("player")
 
   local oldEffects = ZO_RZCHROMA_EFFECTS.deathEffects
@@ -134,6 +137,7 @@ function ChromaConfig:GetKeybindColor(actionName)
 end
 
 function ChromaConfig:ResetKeybindActionEffects(actionName)
+  if not ChromaConfig.active then return end
   if actionName == nil then
     for k,v in pairs(self.StaticData.Keybinds) do
       self:ResetKeybindActionEffects(k)

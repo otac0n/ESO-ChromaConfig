@@ -9,7 +9,7 @@
 ; other countries. All rights reserved.
 
 ## Title: |cff0000C|cff8800h|cffff00r|c00ff00o|c4444ffm|cff00ffa|rConfig
-## APIVersion: 101033
+## APIVersion: 101033 101034 101035 101036
 ## Version: 1.0
 ## SavedVariables: ChromaConfig_Settings
 ## Author: otac0n

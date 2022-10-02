@@ -1,5 +1,6 @@
 local localizedStrings = {
   ["en"] = {
+    CHROMA_NOT_ENABLED_WARNING = "|cff0000Warning|r: The |c44d62cRazer Chroma™|r system is not enabled.",
     ALLIANCE_SETTINGS = "Alliance Settings",
     ALLIANCE_HEADER = "Alliance Background",
     BATTLEGROUNDS_HEADER = "Battlegrounds Background",
